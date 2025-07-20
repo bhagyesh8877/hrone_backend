@@ -1,18 +1,29 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional
+
+# --- Product Models ---
+class SizeEntry(BaseModel):
+    size: str
+    quantity: int
 
 class ProductModel(BaseModel):
     name: str
-    description: Optional[str]
+    description: Optional[str] = None
     price: float
-    size: Optional[str]
+    sizes: List[SizeEntry]
 
 class ProductOut(ProductModel):
     _id: str
 
-class OrderModel(BaseModel):
-    user_id: str
-    products: List[str]  # Product IDs as strings
+# --- Order Models ---
+class OrderItem(BaseModel):
+    productId: str
+    qty: int
 
-class OrderOut(OrderModel):
-    _id: str
+class OrderModel(BaseModel):
+    userId: str
+    items: List[OrderItem]
+
+class OrderOut(BaseModel):
+    id: str
+    items: List[dict]
