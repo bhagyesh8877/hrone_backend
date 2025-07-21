@@ -4,7 +4,7 @@ A backend system to manage **Products** and **Orders** using FastAPI and MongoDB
 
 ---
 
-## ✅ Features
+## Features
 
 - Create and list products with multiple sizes and stock quantities.
 - Create and list orders by referencing products via `productId`.
@@ -16,25 +16,16 @@ A backend system to manage **Products** and **Orders** using FastAPI and MongoDB
 
 ## 🛠️ Tech Stack
 
-- 🐍 **FastAPI**
-- 🍃 **MongoDB** (via `pymongo`)
-- 📘 **Pydantic** for data validation
-- 🚀 **Render** (or **localhost**) for deployment
+- **FastAPI**
+- **MongoDB** (via `pymongo`)
+- **Pydantic** for data validation
+- **Render** (or **localhost**) for deployment
 
 ---
 
 ## 📁 Project Structure
 
-```bash
-app/
-├── main.py
-├── db.py
-├── models.py
-├── routes/
-│   ├── products.py
-│   └── orders.py
-
-```
+![alt text](image.png)
 
 ---
 
@@ -174,7 +165,7 @@ POST /orders
 
 ---
 
-### ✅ GET `/orders`
+### GET `/orders`
 **List orders with joined product details**
 ```
 GET /orders?userId=user_1&limit=5&offset=0
