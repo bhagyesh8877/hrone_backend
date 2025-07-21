@@ -46,11 +46,17 @@ def create_order(order_data: Dict):
 
 # --- Get Orders API ---
 @router.get("/orders", status_code=200)
-def list_orders(limit: int = Query(10, ge=1), offset: int = Query(0, ge=0)):
-    """
-    Get list of orders with product details and pagination.
-    """
-    pipeline = [
+def list_orders(
+    userId: str = Query(None, alias="userId"),
+    limit: int = Query(10, ge=1),
+    offset: int = Query(0, ge=0)
+):
+    pipeline = []
+    # 🔍 Filter by userId if provided
+    if userId:
+        pipeline.append({"$match": {"userId": userId}})
+
+    pipeline.extend([
         {"$skip": offset},
         {"$limit": limit},
         {"$unwind": "$items"},
@@ -66,7 +72,6 @@ def list_orders(limit: int = Query(10, ge=1), offset: int = Query(0, ge=0)):
         {
             "$group": {
                 "_id": "$_id",
-                "userId": {"$first": "$userId"},
                 "items": {
                     "$push": {
                         "productDetails": {
@@ -78,24 +83,20 @@ def list_orders(limit: int = Query(10, ge=1), offset: int = Query(0, ge=0)):
                 }
             }
         }
+    ])
+
+    orders = list(orders_collection.aggregate(pipeline))
+
+    response_data = [
+        {"id": str(order["_id"]), "items": order["items"]}
+        for order in orders
     ]
 
-    results = list(orders_collection.aggregate(pipeline))
-
-    formatted_orders = []
-    for order in results:
-        formatted_orders.append({
-            "id": str(order["_id"]),
-            "items": order["items"]
-        })
-
-    page_info = {
-        "next": str(offset + limit),
-        "limit": limit,
-        "previous": max(offset - limit, 0)
-    }
-
     return {
-        "data": formatted_orders,
-        "page": page_info
+        "data": response_data,
+        "page": {
+            "next": str(offset + limit),
+            "limit": limit,
+            "previous": max(offset - limit, 0)
+        }
     }
