@@ -52,7 +52,7 @@ def list_orders(
     offset: int = Query(0, ge=0)
 ):
     pipeline = []
-    # 🔍 Filter by userId if provided
+    
     if userId:
         pipeline.append({"$match": {"userId": userId}})
 
