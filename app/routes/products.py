@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from typing import Optional
 from app.db import db
-from app.models import ProductModel  # imported from models.py
+from app.models import ProductModel
 from bson import ObjectId
 import re
 

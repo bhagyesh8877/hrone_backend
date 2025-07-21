@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-# --- Product Models ---
 class SizeEntry(BaseModel):
     size: str
     quantity: int
@@ -15,7 +14,7 @@ class ProductModel(BaseModel):
 class ProductOut(ProductModel):
     _id: str
 
-# --- Order Models ---
+
 class OrderItem(BaseModel):
     productId: str
     qty: int
