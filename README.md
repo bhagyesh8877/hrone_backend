@@ -1,20 +1,10 @@
-# 🛒 HROne Backend Task – FastAPI + MongoDB
+# HROne Backend Task – FastAPI + MongoDB
 
-A backend system to manage **Products** and **Orders** using FastAPI and MongoDB, built as per specifications for automated evaluation (API correctness, structure, and output).
-
----
-
-## Features
-
-- Create and list products with multiple sizes and stock quantities.
-- Create and list orders by referencing products via `productId`.
-- Support for filtering, pagination, and MongoDB joins (`$lookup`).
-- Response formats match exactly the provided API spec.
-- Clean code structure with modular routes and models.
+A backend system to manage **Products** and **Orders** using FastAPI and MongoDB.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **FastAPI**
 - **MongoDB** (via `pymongo`)
@@ -23,17 +13,17 @@ A backend system to manage **Products** and **Orders** using FastAPI and MongoDB
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ![alt text](image.png)
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Install Dependencies
 ```bash
-pip install fastapi pymongo uvicorn
+pip install -r requirements.txt
 ```
 
 ### 2. Run the Server Locally
@@ -45,51 +35,62 @@ uvicorn app.main:app --reload
 Edit your `app/db.py`:
 ```python
 from pymongo import MongoClient
+
+### Replace Your username, password and cluster name in the following url
 client = MongoClient("mongodb+srv://<username>:<password>@cluster.mongodb.net/")
-db = client["task"]
+
+### 4. Include your table name below which consist of two collections named produts and orders. In my case it is "task"
+db = client["task"] 
 ```
 
 ---
 
-## 📦 MongoDB Collections
+## MongoDB Structure 
 
-### 🔹 `products`
+###  `products`
 ```json
 {
   "_id": ObjectId,
-  "name": "T-Shirt",
-  "description": "Cotton round neck",
-  "price": 299.99,
+  "name": "string",
+  "description": "string",
+  "price": float,
   "sizes": [
-    { "size": "M", "quantity": 5 },
-    { "size": "L", "quantity": 0 }
+    {
+      "size": "string",
+      "quantity": int
+    }
   ]
 }
+
 ```
 
-### 🔹 `orders`
+### `orders`
 ```json
 {
   "_id": ObjectId,
-  "userId": "user_1",
+  "userId": "string",
   "items": [
-    { "productId": ObjectId, "qty": 2 }
+    {
+      "productId": ObjectId,
+      "qty": int
+    }
   ]
 }
+
 ```
 
 ---
 
-## 🔗 API Endpoints
+## API Endpoints
 
-> Base URL (Replace with Render or localhost):
+> Base URL:
 > ```
-> https://yourapp.onrender.com
+> https://bhagyesh-backend-task.onrender.com
 > ```
 
 ---
 
-### ✅ POST `/products`
+### POST `/products`
 **Create a product**
 ```json
 POST /products
@@ -117,7 +118,7 @@ POST /products
 
 ---
 
-### ✅ GET `/products`
+### GET `/products`
 **List products (filter by name, size, and paginate)**
 ```
 GET /products?name=shirt&size=M&limit=5&offset=0
@@ -142,7 +143,7 @@ GET /products?name=shirt&size=M&limit=5&offset=0
 
 ---
 
-### ✅ POST `/orders`
+### POST `/orders`
 **Create an order**
 ```json
 POST /orders
@@ -197,29 +198,6 @@ GET /orders?userId=user_1&limit=5&offset=0
 
 ---
 
-## 📈 Query Optimizations
-
-- `$lookup` used in aggregation pipeline to fetch `productDetails` during `GET /orders`.
-- `$match` on `userId` for filtering.
-- `$group` and `$unwind` structure ensures compact payload.
-
----
-
-## ✅ Evaluation Readiness
-
-| Criteria                       | Status   |
-|--------------------------------|----------|
-| ✅ Code Completeness            | All APIs return exactly as per spec |
-| ✅ Code Clarity & Docs          | Clean, formatted, docstrings added |
-| ✅ API Structure Compliance     | Method, URL, inputs/outputs all valid |
-| ✅ MongoDB Model Structure      | ObjectId-based linking, normalized |
-| ✅ Query Optimization           | Proper use of `$lookup`, `$group` |
-
----
-
-
-
 ## 👨‍💻 Author
 
-**Bhagyesh Chaudhari**  
-Backend Developer | FastAPI + MongoDB Specialist
+**Bhagyesh Sunil Chaudhari**  
